@@ -1,0 +1,127 @@
+def dijkstra(graph, start):
+    distances = {vertex: float('inf') for vertex in graph}
+    distances[start] = 0
+
+    # List to store visited vertices
+    visited = []
+
+    while len(visited) < len(graph):
+        # Find the vertex with the minimum distance
+        min_distance = float('inf')
+        min_vertex = None
+
+        for vertex in graph:
+            if vertex not in visited and distances[vertex] < min_distance:
+                min_distance = distances[vertex]
+                min_vertex = vertex
+
+        if min_vertex is None:
+            # There is no path to the remaining unvisited vertices
+            break
+
+        # Add the vertex to the visited list
+        visited.append(min_vertex)
+
+        # Update the distances of its neighbors
+        for neighbor, weight in graph[min_vertex]:
+            distance = distances[min_vertex] + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+
+    return distances
+
+
+# Accept graph input from the user
+graph = {}
+
+num_edges = int(input("Enter the number of edges: "))
+
+for i in range(num_edges):
+    print("\nFor Edge", i+1)
+
+    src = input("Enter start vertex: ")
+    dest = input("Enter end vertex: ")
+    weight = int(input("Enter weight: "))
+          
+    # Add the edge to the graph
+    if src in graph:
+        graph[src].append((dest, weight))
+    else:
+        graph[src] = [(dest, weight)]
+
+    if dest in graph:
+        graph[dest].append((src, weight))
+    else:
+        graph[dest] = [(src, weight)]
+
+
+start_vertex = input("Enter the starting vertex: ")
+
+# Apply Dijkstra's algorithm
+shortest_distances = dijkstra(graph, start_vertex)
+
+print("\nShortest distances from vertex", start_vertex)
+for vertex, distance in shortest_distances.items():
+    print("Vertex:", vertex, "Distance:", distance)
+
+"""
+Enter the number of edges: 6
+
+For Edge 1
+Enter start vertex: A
+Enter end vertex: B
+Enter weight: 2
+
+For Edge 2
+Enter start vertex: B
+Enter end vertex: C
+Enter weight: 3
+
+For Edge 3
+Enter start vertex: C
+Enter end vertex: D
+Enter weight: 1
+
+For Edge 4
+Enter start vertex: D
+Enter end vertex: A
+Enter weight: 3
+
+For Edge 5
+Enter start vertex: B
+Enter end vertex: D
+Enter weight: 5
+
+For Edge 6
+Enter start vertex: A
+Enter end vertex: C
+Enter weight: 4
+
+Enter the starting vertex: A
+Shortest distances from vertex A
+Vertex: A Distance: 0
+Vertex: B Distance: 2
+Vertex: C Distance: 4
+Vertex: D Distance: 3
+
+"""
+"""
+Dijkstra's Algorithm:
+Dijkstra's algorithm is a graph search algorithm that finds the shortest path from a start vertex to all other vertices in a weighted graph. It works by iteratively selecting the vertex with the minimum distance from the start vertex, updating the distances of its neighbors, and continuing until all vertices are visited.
+
+Components of the Code:
+dijkstra Function:
+It takes the graph (graph representation) and start (start vertex) as inputs.
+It initializes distances to store the shortest distances from the start vertex to all other vertices, with all distances initially set to infinity except for the start vertex (distance 0).
+It iteratively selects the vertex with the minimum distance from the start vertex, updates the distances of its neighbors, and adds the vertex to the visited list.
+It returns the shortest distances from the start vertex to all other vertices.
+Graph Representation:
+The graph dictionary represents the graph, where keys are vertices, and values are lists of tuples (neighbor, weight) representing adjacent vertices and their corresponding edge weights.
+User Input:
+The code prompts the user to input the number of edges and details for each edge (start vertex, end vertex, and weight).
+It constructs the graph based on the user input.
+Main Logic:
+The code applies Dijkstra's algorithm to find the shortest distances from the specified start vertex to all other vertices in the graph.
+It prints the shortest distances for each vertex from the start vertex.
+
+"""

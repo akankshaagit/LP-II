@@ -1,0 +1,131 @@
+import heapq
+
+# Define the goal state
+goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+
+# Function to calculate the number of misplaced tiles heuristic
+def calculate_heuristic(state):
+    count = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != goal_state[i][j]:
+                count += 1
+    return count
+
+# Function to get possible next moves
+def get_next_moves(state):
+    zero_i, zero_j = None, None
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] == 0:
+                zero_i, zero_j = i, j
+                break
+    next_moves = []
+    movements = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # (up, down, left, right)
+    for move in movements:
+        move_i, move_j = move
+        new_i, new_j = zero_i + move_i, zero_j + move_j
+        if 0 <= new_i < 3 and 0 <= new_j < 3:
+            new_state = [row[:] for row in state]
+            new_state[zero_i][zero_j], new_state[new_i][new_j] = new_state[new_i][new_j], new_state[zero_i][zero_j]
+            next_moves.append(new_state)
+    return next_moves
+
+# Function to perform the A* search algorithm
+def a_star_search(start_state):
+    open_list = []
+    heapq.heappush(open_list, (0, start_state))
+    cost_dict = {str(start_state): 0}
+    path_dict = {str(start_state): []}
+
+    while open_list:
+        current_cost, current_state = heapq.heappop(open_list)
+
+        if current_state == goal_state:
+            return path_dict[str(current_state)]
+
+        next_moves = get_next_moves(current_state)
+
+        for move in next_moves:
+            new_cost = cost_dict[str(current_state)] + 1
+            new_heuristic = calculate_heuristic(move)
+            new_total_cost = new_cost + new_heuristic
+
+            if str(move) not in cost_dict or new_cost < cost_dict[str(move)]:
+                cost_dict[str(move)] = new_cost
+                path_dict[str(move)] = path_dict[str(current_state)] + [move]
+                heapq.heappush(open_list, (new_total_cost, move))
+
+    return None
+
+# Perform the A* search with the given start state
+# Define the start state
+start_state = [[2, 3, 6], [1, 5, 8], [4, 7, 0]]
+
+result = a_star_search(start_state)
+
+if result is None:
+    print("Goal state is not reachable from the given start state.")
+else:
+    print("The optimal path to reach the goal state is:")
+    for move in result:
+        for row in move:
+            print(row)
+        print()
+
+"""
+The optimal path to reach the goal state is:
+[2, 3, 6]
+[1, 5, 0]
+[4, 7, 8]
+
+[2, 3, 0]
+[1, 5, 6]
+[4, 7, 8]
+
+[2, 0, 3]
+[1, 5, 6]
+[4, 7, 8]
+
+[0, 2, 3]
+[1, 5, 6]
+[4, 7, 8]
+
+[1, 2, 3]
+[0, 5, 6]
+[4, 7, 8]
+
+[1, 2, 3]
+[4, 5, 6]
+[0, 7, 8]
+
+[1, 2, 3]
+[4, 5, 6]
+[7, 0, 8]
+
+[1, 2, 3]
+[4, 5, 6]
+[7, 8, 0]
+
+"""
+"""
+questions:
+A* search is the most commonly known form of best-first search. It uses heuristic function
+h(n), and cost to reach the node n from the start state g(n).
+
+1.A* Algo:
+A* Algorithm:
+The A* algorithm is a combination of Dijkstra's algorithm and a greedy best-first search. It evaluates nodes by combining the cost of reaching the node from the start node (g) and the estimated cost of reaching the goal node from the current node (h). It selects nodes with the lowest f value (g + h) for exploration, prioritizing nodes that are closer to the goal.
+
+This is an implementation of the 8-puzzle game solved using the A* search algorithm with the number of misplaced tiles heuristic.
+Game Description:
+The 8-puzzle is a sliding puzzle game consisting of a 3x3 grid with eight numbered tiles and one blank space. The goal is to rearrange the tiles by sliding them into the blank space until they are in the numerical order from 1 to 8, with the blank space in the bottom-right corner.
+
+Code Explanation:
+Goal State Definition: The goal_state variable defines the configuration that represents the solved puzzle.
+Heuristic Function: The calculate_heuristic function computes the number of misplaced tiles heuristic. It counts the number of tiles that are not in their correct position compared to the goal state.
+Next Moves Function: The get_next_moves function generates possible next moves from the current state. It finds the position of the blank space and generates new states by swapping the blank space with adjacent tiles (up, down, left, right).
+A Search Algorithm*: The a_star_search function performs the A* search algorithm to find the optimal solution path from the start state to the goal state. It maintains an open list of states to explore, sorted by their total cost (sum of cost and heuristic). It iteratively expands the states with the lowest total cost, updating the cost and path dictionaries accordingly.
+Main Logic: The main part of the code defines a start state and calls the a_star_search function to find the optimal path. If a solution is found, it prints each move in the optimal path.
+
+"""

@@ -1,0 +1,91 @@
+from collections import defaultdict
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def bfs(self, start):
+        visited = set()
+        queue = [start]
+        bfs_traversal = []
+
+        while queue:
+            node = queue.pop(0)
+            if node not in visited:
+                bfs_traversal.append(node)
+                visited.add(node)
+                queue.extend(self.graph[node])
+
+        return bfs_traversal
+
+    def dfs(self, start):
+        visited = set()
+        stack = [start]
+        dfs_traversal = []
+
+        while stack:
+            node = stack.pop()
+            if node not in visited:
+                dfs_traversal.append(node)
+                visited.add(node)
+                stack.extend(reversed(self.graph[node]))
+
+        return dfs_traversal
+
+# Taking input from the user to build the graph
+num_vertices = int(input("Enter the number of vertices: "))
+graph = Graph()
+
+for _ in range(num_vertices):
+    u, v = map(int, input("Enter an edge: ").split())
+    graph.add_edge(u, v)
+
+start_node = int(input("Enter the starting node: "))
+
+print("BFS Traversal:", graph.bfs(start_node))
+print("DFS Traversal:", graph.dfs(start_node))
+
+
+"""
+Enter the number of vertices: 4
+Enter an edge: 0 1
+Enter an edge: 0 2
+Enter an edge: 2 4
+Enter an edge: 0 3
+Enter the starting node: 0
+BFS Traversal: [0, 1, 2, 3, 4]
+DFS Traversal: [0, 1, 2, 4, 3]
+"""
+
+
+"""
+questions:
+
+1.what is bfs?
+Breadth-first search (BFS) is a fundamental algorithm used for traversing or searching tree or graph data structures. It systematically explores all the neighbor nodes at the current depth level before moving on to the nodes at the next depth level.
+Start: Begin with a queue data structure and enqueue the starting node.
+Dequeue: Dequeue a node from the queue and mark it as visited.
+Explore Neighbors: Enqueue all of its adjacent nodes (neighbors) that have not been visited yet.
+Repeat: Repeat steps 2 and 3 until the queue is empty.
+
+2.what is dfs?
+Depth-First Search (DFS)
+Initialization: Begin with a stack (or recursion) and push the starting node onto the stack (or call the function with the starting node if using recursion).
+Exploration: Pop a node from the stack (or process the current node if using recursion). Then, recursively explore each unvisited neighbor of the current node (or push each unvisited neighbor onto the stack).
+Repeat: Repeat step 2 until there are no unvisited nodes remaining. If using a stack, this continues until the stack becomes empty.
+Termination: The process terminates when there are no unvisited nodes left.
+
+3.what is iterative program?
+In computer science, "iterative" refers to a process or algorithm that repeats a sequence of steps multiple times until a certain condition is met or a desired result is achieved. iterative algorithms use loops (such as for loops, while loops, or do-while loops) to repeatedly execute a block of code.They are generally preferred in situations where recursion may lead to excessive function calls and consume excessive memory.
+
+4.what is defaultdict ?
+It uses a defaultdict from the collections module to automatically create a new list for each new key (vertex) added to the graph.defaultdict is a class in the Python collections module that behaves like a standard dictionary, but it provides a default value for keys that haven't been set yet.
+
+5.Methods:
+__init__(self): Initializes the graph with an empty defaultdict.
+add_edge(self, u, v): Adds an edge between vertices u and v by appending v to the adjacency list of u.
+
+"""

@@ -1,0 +1,117 @@
+def depth_limited_dfs(graph, start, goal, depth_limit):
+    if start == goal:
+        return [start]
+
+    if depth_limit <= 0:
+        return None
+
+    if start not in graph:
+        return None
+
+    for neighbor in graph[start]:
+        path = depth_limited_dfs(graph, neighbor, goal, depth_limit - 1)
+        if path is not None:
+            return [start] + path
+
+    return None
+
+
+def iterative_deepening_dfs(graph, start, goal, max_depth):
+    for depth in range(max_depth + 1):
+        path = depth_limited_dfs(graph, start, goal, depth)
+        if path is not None:
+            return path
+
+    return None
+
+
+# Accept graph from the user
+graph = {}
+
+num_edges = int(input("Enter the number of edges: "))
+
+for i in range(num_edges):
+    print("\nFor Edge", i + 1)
+    src = input("Enter start vertex: ")
+    dest = input("Enter end vertex: ")
+
+    # Add vertices to the graph if they don't exist
+    if src not in graph:
+        graph[src] = []
+    if dest not in graph:
+        graph[dest] = []
+
+    graph[src].append(dest)
+
+start_vertex = input("Enter the start vertex: ")
+goal_vertex = input("Enter the goal vertex: ")
+max_depth = int(input("Enter the maximum depth: "))
+
+# Find the path from the start to the goal using IDDFS
+path = iterative_deepening_dfs(graph, start_vertex, goal_vertex, max_depth)
+
+if path is not None:
+    print(f"Path from {start_vertex} to {goal_vertex}: {path}")
+else:
+    print(f"There is no path from {start_vertex} to {goal_vertex} within the depth limit.")
+
+
+"""
+Enter the number of edges: 6
+
+For Edge 1
+Enter start vertex: A
+Enter end vertex: B
+
+For Edge 2
+Enter start vertex: B
+Enter end vertex: C
+
+For Edge 3
+Enter start vertex: A
+Enter end vertex: C
+
+For Edge 4
+Enter start vertex: B
+Enter end vertex: D
+
+For Edge 5
+Enter start vertex: C
+Enter end vertex: D
+
+For Edge 6
+Enter start vertex: D
+Enter end vertex: E
+
+Enter the start vertex: A
+Enter the goal vertex: E
+Enter the maximum depth: 3
+Path from A to E: ['A', 'B', 'C', 'D', 'E']
+
+"""
+"""
+This Python code implements the Iterative Deepening Depth-First Search (IDDFS) algorithm to find a path from a start vertex to a goal vertex in a graph.
+
+Iterative Deepening Depth-First Search (IDDFS):
+IDDFS is a combination of Depth-First Search (DFS) and Breadth-First Search (BFS) algorithms. It performs a DFS up to a certain depth limit, gradually increasing the depth limit until the goal is found.
+
+Components of the Code:
+depth_limited_dfs Function:
+It performs a depth-limited DFS search from the start vertex to the goal vertex within a specified depth limit.
+If the goal is found within the depth limit, it returns the path from the start to the goal.
+Otherwise, it returns None.
+iterative_deepening_dfs Function:
+It iteratively calls depth_limited_dfs with increasing depth limits until the goal is found or the maximum depth is reached.
+If the goal is found within any depth limit, it returns the path from the start to the goal.
+Otherwise, it returns None.
+Graph Representation:
+The graph dictionary represents the graph, where keys are vertices, and values are lists of neighboring vertices.
+User Input:
+The code prompts the user to input the number of edges and details for each edge (start vertex and end vertex).
+It constructs the graph based on the user input.
+It also takes input for the start vertex, goal vertex, and maximum depth.
+Main Logic:
+The code applies the IDDFS algorithm to find a path from the start vertex to the goal vertex.
+It prints the path if found or a message indicating that no path exists within the specified depth limit.
+
+"""

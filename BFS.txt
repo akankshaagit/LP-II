@@ -1,0 +1,121 @@
+from queue import PriorityQueue
+
+
+def best_first_search(graph, start, goal):
+    visited = set()
+    priority_queue = PriorityQueue()
+    priority_queue.put((0, start))
+    path = []
+
+    while not priority_queue.empty():
+        _, current_node = priority_queue.get()
+
+        if current_node == goal:
+            path.append(current_node)
+            break
+
+        if current_node not in visited:
+            path.append(current_node)
+            visited.add(current_node)
+
+            for neighbor in graph[current_node]:
+                if neighbor not in visited:
+                    priority_queue.put((graph[current_node][neighbor], neighbor))
+
+    if path[-1] != goal:
+        return None
+
+    return path
+
+
+# Accept graph from the user
+graph = {}
+
+num_edges = int(input("Enter the number of edges: "))
+
+for i in range(num_edges):
+    print("\nFor Edge", i + 1)
+    src = input("Enter start vertex: ")
+    dest = input("Enter end vertex: ")
+    weight = int(input("Enter weight: "))
+
+    # Add vertices to the graph if they don't exist
+    if src not in graph:
+        graph[src] = {}
+    if dest not in graph:
+        graph[dest] = {}
+
+    graph[src][dest] = weight
+
+start_vertex = input("Enter the start vertex: ")
+goal_vertex = input("Enter the goal vertex: ")
+
+# Find the path from the start to the goal using Best-First Search
+path = best_first_search(graph, start_vertex, goal_vertex)
+
+if path is not None:
+    print(f"Path from {start_vertex} to {goal_vertex}: {path}")
+else:
+    print(f"There is no path from {start_vertex} to {goal_vertex} using Best-First Search.")
+
+
+"""
+Enter the number of edges: 6
+
+For Edge 1
+Enter start vertex: A
+Enter end vertex: B
+Enter weight: 2
+
+For Edge 2
+Enter start vertex: B
+Enter end vertex: C
+Enter weight: 0
+
+For Edge 3
+Enter start vertex: C
+Enter end vertex: D
+Enter weight: 8
+
+For Edge 4
+Enter start vertex: A
+Enter end vertex: C
+Enter weight: 1
+
+For Edge 5
+Enter start vertex: B
+Enter end vertex: D
+Enter weight: 3
+
+For Edge 6
+Enter start vertex: A
+Enter end vertex: D
+Enter weight: 2
+Enter the start vertex: A
+Enter the goal vertex: D
+Path from A to D: ['A', 'C', 'B', 'D']
+
+"""
+
+This code implements the Best-First Search (BFS) algorithm to find a path from a start vertex to a goal vertex in a graph.
+
+Best-First Search (BFS):
+Best-First Search is an informed search algorithm that explores a graph by expanding the most promising node based on a heuristic function. It uses a priority queue to choose the next node to visit, prioritizing nodes that are expected to lead to the goal.
+
+Components of the Code:
+best_first_search Function:
+It takes the graph (graph representation), start (start vertex), and goal (goal vertex) as inputs.
+It uses a priority queue to choose the next node based on the weight (heuristic value) associated with each node.
+It continues the search until the goal vertex is found or until no more nodes are left to explore.
+It returns the path from the start to the goal if found, or None otherwise.
+Graph Representation:
+The graph dictionary represents the graph, where keys are vertices, and values are dictionaries containing neighbors and their associated weights.
+User Input:
+The code prompts the user to input the number of edges and details for each edge (start vertex, end vertex, and weight).
+It constructs the graph based on the user input.
+It also takes input for the start vertex and goal vertex.
+Main Logic:
+The code applies the Best-First Search algorithm to find a path from the start vertex to the goal vertex.
+It prints the path if found or a message indicating that no path exists between the specified vertices.
+
+"""

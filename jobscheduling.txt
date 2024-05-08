@@ -1,0 +1,105 @@
+def job_sequencing():
+    n = int(input("Enter the number of jobs: "))
+
+    job = []
+    deadline = []
+    profit = []
+
+    for i in range(n):
+        print("\nJob ",i+1)
+        job.append(input("Enter job name: "))
+        deadline.append(int(input("Enter deadline for job : ")))
+        profit.append(int(input("Enter profit for job : ")))
+
+    max_deadline = max(deadline)
+
+    sorted_jobs = sorted(zip(job, deadline, profit), key=lambda x: x[2], reverse=True)
+
+    schedule = [None] * max_deadline
+    total_profit = 0
+
+    for j in sorted_jobs:
+        current_deadline = j[1]
+        slot = current_deadline - 1
+
+        while slot >= 0:
+            if schedule[slot] is None:
+                schedule[slot] = j[0]
+                total_profit += j[2]
+                break
+            slot -= 1
+
+    return schedule, total_profit
+
+# Example usage
+schedule, total_profit = job_sequencing()
+
+print("Job Schedule:")
+for i in range(len(schedule)):
+    if schedule[i] is not None:
+        print("Time Slot", i+1, ":", schedule[i])
+
+print("Total Profit:", total_profit)
+
+
+"""
+Enter the number of jobs: 5
+
+Job  1
+Enter job name: J1
+Enter deadline for job : 1
+Enter profit for job : 100
+
+Job  2
+Enter job name: J2
+Enter deadline for job : 5
+Enter profit for job : 250
+
+Job  3
+Enter job name: J3
+Enter deadline for job : 4
+Enter profit for job : 75
+
+Job  4
+Enter job name: J4
+Enter deadline for job : 2
+Enter profit for job : 50
+
+Job  5
+Enter job name: J5
+Enter deadline for job : 3
+Enter profit for job : 200
+Job Schedule:
+Time Slot 1 : J1
+Time Slot 2 : J4
+Time Slot 3 : J5
+Time Slot 4 : J3
+Time Slot 5 : J2
+Total Profit: 675
+"""
+
+"""
+Job Sequencing Problem:
+The job sequencing problem involves scheduling a set of jobs with associated deadlines and profits, aiming to maximize the total profit while meeting the deadlines.
+
+Components of the Code:
+job_sequencing Function:
+It takes input from the user for the number of jobs, job names, deadlines, and profits.
+It sorts the jobs based on profit in descending order.
+It schedules the jobs based on their deadlines and available slots.
+It returns the job schedule and total profit.
+Main Logic:
+The code initializes empty lists to store job names, deadlines, and profits.
+It iterates through each job, prompting the user to input job details.
+It finds the maximum deadline among all jobs.
+It sorts the jobs based on profit in descending order.
+It schedules each job into the available time slots, starting from the last slot to meet the deadlines.
+It calculates the total profit earned from the scheduled jobs.
+Example Usage:
+The code invokes the job_sequencing function to get the job schedule and total profit.
+It prints the scheduled jobs along with their time slots and the total profit earned.
+
+This output indicates that the jobs J5, J3, and J4 are scheduled within their respective deadlines, and the total profit earned is 575. The jobs are scheduled in such a way that the total profit is maximized.
+
+
+"""

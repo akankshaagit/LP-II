@@ -1,0 +1,94 @@
+def is_safe(graph, v, color, colors):
+    for i in range(len(graph)):
+        if graph[v][i]==1 and colors[i] == color:
+            return False
+    return True
+
+def calculate_lower_bound(graph, colors, v):
+    # Count the number of unique colors used in the already colored vertices
+    used_colors = set()
+    for i in range(v):
+        if colors[i] != -1:
+            used_colors.add(colors[i])
+    return len(used_colors)
+
+
+def graph_coloring_branch_and_bound(graph, num_colors):
+    num_vertices = len(graph)
+    colors = [-1] * num_vertices
+
+    def graph_coloring_util(v):
+        if v == num_vertices:
+            return True
+
+        # Calculate the lower bound for the remaining vertices
+        lower_bound = calculate_lower_bound(graph, colors, v)
+
+        # Try assigning colors to the current vertex 'v'
+        for color in range(1, num_colors + 1):
+            if is_safe(graph, v, color, colors) and lower_bound < num_colors:
+                colors[v] = color
+
+                if graph_coloring_util(v + 1):
+                    return True
+
+                colors[v] = -1
+
+        return False
+
+    if graph_coloring_util(0):
+        print("Graph can be colored using", num_colors, "colors.")
+        print("Coloring:", colors)
+    else:
+        print("Graph cannot be colored using", num_colors, "colors.")
+
+def graph_coloring_menu():
+    print("Graph Coloring Problem\n")
+
+    num_vertices = int(input("Enter the number of vertices in the graph: "))
+    graph = [[0 for _ in range(num_vertices)] for _ in range(num_vertices)]
+    num_edges = int(input("Enter the number of edges in the graph: "))
+
+    for _ in range(num_edges):
+        edge = input("Enter an edge (0 1): ").split()
+        u, v = int(edge[0]), int(edge[1])
+        graph[u][v] = 1
+        graph[v][u] = 1
+
+    num_colors = int(input("Enter the number of colors: "))
+
+    graph_coloring_branch_and_bound(graph, num_colors)
+
+graph_coloring_menu()
+
+
+"""
+Graph Coloring Problem
+
+Enter the number of vertices in the graph: 6
+Enter the number of edges in the graph: 6
+Enter an edge (0 1): 0 1
+Enter an edge (0 1): 0 2
+Enter an edge (0 1): 1 2
+Enter an edge (0 1): 2 3
+Enter an edge (0 1): 3 4
+Enter an edge (0 1): 4 5
+Enter the number of colors: 4
+Graph can be colored using 4 colors.
+Coloring: [1, 2, 3, 1, 2, 1]
+
+"""
+
+"""
+This program implements the graph coloring problem using the branch and bound algorithm
+
+This program implements the graph coloring problem using the branch and bound algorithm. Here's how it works:
+
+The is_safe function checks if it's safe to color a vertex with a given color by examining its adjacent vertices. If any adjacent vertex already has the same color, it returns False, indicating that the coloring is not safe.
+The calculate_lower_bound function calculates a lower bound for the remaining vertices based on the number of unique colors used in the already colored vertices. This helps in pruning the search space by avoiding unnecessary exploration.
+The graph_coloring_branch_and_bound function is the main function that performs graph coloring using the branch and bound approach. It initializes an array colors to store the color assigned to each vertex. It then defines a recursive helper function graph_coloring_util to explore different colorings of the graph.
+In graph_coloring_util, for each vertex v, it calculates the lower bound for the remaining vertices and tries assigning colors to v one by one. If a color assignment is found such that it doesn't conflict with adjacent vertices and the lower bound is less than the total number of colors, it proceeds to color the next vertex recursively. If a valid coloring is found, it returns True.
+The graph_coloring_menu function provides a simple menu-driven interface to input the graph's details, such as the number of vertices, edges, and colors. It then calls graph_coloring_branch_and_bound to solve the graph coloring problem.
+When executed, the program prompts the user to input the graph details and the number of colors. It then outputs whether the graph can be colored using the specified number of colors and, if so, the color assignment for each vertex.
+
+"""

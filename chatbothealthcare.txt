@@ -1,0 +1,70 @@
+import random
+
+# Dictionary containing patterns and responses for the healthcare chatbot
+responses = {
+    "greeting": ["Hello! Welcome to our healthcare chatbot.", "Hi there! How can I assist you today?"],
+    "symptoms": ["Sure! Can you please tell me more about your symptoms?", "What symptoms are you experiencing?"],
+    "advice": ["Based on your symptoms, it's recommended to consult a healthcare professional for personalized advice."],
+    "appointment": ["Would you like to book an appointment with a doctor?", "Sure! I can help you schedule an appointment."],
+    "goodbye": ["Thank you for using our healthcare chatbot! Take care.", "Goodbye! We hope you feel better soon."],
+    "default": ["I'm sorry, I didn't understand that. Could you please rephrase your request?"]
+}
+
+# Function to generate a response based on user input
+def generate_response(user_input):
+    user_input = user_input.lower()
+    if "hello" in user_input or "hi" in user_input:
+        return random.choice(responses["greeting"])
+    elif "symptom" in user_input or "feel" in user_input:
+        return random.choice(responses["symptoms"])
+    elif "advice" in user_input or "medical" in user_input:
+        return random.choice(responses["advice"])
+    elif "appointment" in user_input or "book" in user_input:
+        return random.choice(responses["appointment"])
+    elif "bye" in user_input or "thank you" in user_input:
+        return random.choice(responses["goodbye"])
+    else:
+        return random.choice(responses["default"])
+
+# Main function to handle user interaction
+def healthcare_chatbot():
+    print("Healthcare Chatbot:")
+    print("How can I assist you today?")
+
+    while True:
+        user_input = input("You: ")
+        response = generate_response(user_input)
+        print("Chatbot:", response)
+
+        if "bye" in user_input or "thank you" in user_input:
+            break
+
+# Run the chatbot
+healthcare_chatbot()
+
+"""
+Healthcare Chatbot:
+How can I assist you today?
+You: Hello
+Chatbot: Hello! Welcome to our healthcare chatbot.
+You: I'm feeling unwell
+Chatbot: Sure! Can you please tell me more about your symptoms?
+You: I have a headache and sore throat
+Chatbot: What symptoms are you experiencing?
+You: What should I do?
+Chatbot: Based on your symptoms, it's recommended to consult a healthcare professional for personalized advice.
+You: Can you help me book an appointment?
+Chatbot: Sure! I can help you schedule an appointment.
+You: Thank you
+Chatbot: Goodbye! We hope you feel better soon.
+"""
+"""
+This chatbot provides responses to user queries related to healthcare topics such as symptoms, medical advice, and appointment booking.
+
+Explanation:
+
+The responses dictionary contains patterns and corresponding responses for the healthcare chatbot. Each key in the dictionary represents a category of user queries, such as greetings, symptoms, advice, appointment, goodbye, and default.
+The generate_response function takes user input, processes it, and returns an appropriate response based on the input pattern.
+The healthcare_chatbot function handles the main interaction with the user. It prompts the user for input, generates responses using the generate_response function, and continues the interaction until the user inputs "bye" or "thank you".
+
+"""

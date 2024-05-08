@@ -1,0 +1,106 @@
+def depth_limited_search(graph, start, goal, depth_limit):
+    visited = set()
+
+    def dfs(current_node, depth):
+        if depth > depth_limit:
+            return None
+
+        if current_node == goal:
+            return [current_node]
+
+        visited.add(current_node)
+
+        for neighbor in graph[current_node]:
+            if neighbor not in visited:
+                path = dfs(neighbor, depth + 1)
+                if path is not None:
+                    return [current_node] + path
+
+        return None
+
+    return dfs(start, 0)
+
+
+# Accept graph from the user
+graph = {}
+
+num_edges = int(input("Enter the number of edges: "))
+
+for i in range(num_edges):
+    print("\nFor Edge", i + 1)
+    src = input("Enter start vertex: ")
+    dest = input("Enter end vertex: ")
+
+    # Add vertices to the graph if they don't exist
+    if src not in graph:
+        graph[src] = []
+    if dest not in graph:
+        graph[dest] = []
+
+    graph[src].append(dest)
+
+start_vertex = input("Enter the start vertex: ")
+goal_vertex = input("Enter the goal vertex: ")
+depth_limit = int(input("Enter the depth limit: "))
+
+# Find the path from the start to the goal using depth-limited search
+path = depth_limited_search(graph, start_vertex, goal_vertex, depth_limit)
+
+if path is not None:
+    print(f"Path from {start_vertex} to {goal_vertex}: {path}")
+else:
+    print(f"There is no path from {start_vertex} to {goal_vertex} within the depth limit.")
+
+"""
+Enter the number of edges: 6
+
+For Edge 1
+Enter start vertex: A
+Enter end vertex: B
+
+For Edge 2
+Enter start vertex: B
+Enter end vertex: C
+
+For Edge 3
+Enter start vertex: C
+Enter end vertex: D
+
+For Edge 4
+Enter start vertex: A
+Enter end vertex: C
+
+For Edge 5
+Enter start vertex: B
+Enter end vertex: D
+
+For Edge 6
+Enter start vertex: A
+Enter end vertex: D
+Enter the start vertex: A
+Enter the goal vertex: D
+Enter the depth limit: 2
+Path from A to D: ['A', 'B', 'D']
+
+"""
+"""
+This code implements the Depth-Limited Search (DLS) algorithm to find a path from a start vertex to a goal vertex within a specified depth limit in a graph.
+Depth-Limited Search (DLS):
+DLS is a variant of Depth-First Search (DFS) that limits the depth of exploration. It explores vertices up to a specified depth limit and backtracks if the goal is not found within that limit.
+
+Components of the Code:
+depth_limited_search Function:
+It takes the graph (graph representation), start (start vertex), goal (goal vertex), and depth_limit as inputs.
+It performs a depth-limited DFS from the start vertex, considering only paths within the depth limit.
+It returns the path from the start to the goal if found within the depth limit, or None otherwise.
+Graph Representation:
+The graph dictionary represents the graph, where keys are vertices, and values are lists of adjacent vertices.
+User Input:
+The code prompts the user to input the number of edges and details for each edge (start vertex and end vertex).
+It constructs the graph based on the user input.
+It also takes input for the start vertex, goal vertex, and depth limit.
+Main Logic:
+The code applies the DLS algorithm to find a path from the start vertex to the goal vertex within the specified depth limit.
+It prints the path if found or a message indicating that no path exists within the depth limit.
+
+"""

@@ -1,0 +1,79 @@
+import random
+
+# Dictionary containing patterns and responses for the chatbot
+responses = {
+    "greeting": ["Hello! Welcome to our restaurant.", "Hi there! How can I assist you today?"],
+    "menu": ["Sure! Here's our menu:\n1. Pizza\n2. Pasta\n3. Burger\n4. Salad"],
+    "order": ["What would you like to order?", "May I take your order?", "What can I get for you today?"],
+    "specials": ["Our specials today are:\n1. Chef's Special Pizza\n2. Seafood Pasta\n3. BBQ Chicken Burger"],
+    "goodbye": ["Thank you for dining with us! Have a great day!", "Goodbye! We hope to see you again soon."],
+    "default": ["I'm sorry, I didn't understand that. Could you please rephrase your request?"]
+}
+
+# Function to generate a response based on user input
+def generate_response(user_input):
+    user_input = user_input.lower()
+    if "hello" in user_input or "hi" in user_input:
+        return random.choice(responses["greeting"])
+    elif "menu" in user_input:
+        return random.choice(responses["menu"])
+    elif "order" in user_input or "hungry" in user_input:
+        return random.choice(responses["order"])
+    elif "special" in user_input or "today" in user_input:
+        return random.choice(responses["specials"])
+    elif "bye" in user_input or "thank you" in user_input:
+        return random.choice(responses["goodbye"])
+    else:
+        return random.choice(responses["default"])
+
+# Main function to handle user interaction
+def restaurant_chatbot():
+    print("Restaurant Chatbot:")
+    print("How can I assist you today?")
+
+    while True:
+        user_input = input("You: ")
+        response = generate_response(user_input)
+        print("Chatbot:", response)
+
+        if "bye" in user_input or "thank you" in user_input:
+            break
+
+# Run the chatbot
+restaurant_chatbot()
+
+"""
+Restaurant Chatbot:
+How can I assist you today?
+You: Hello
+Chatbot: Hello! Welcome to our restaurant.
+You: What's on the menu?
+Chatbot: Sure! Here's our menu:
+1. Pizza
+2. Pasta
+3. Burger
+4. Salad
+You: I'm hungry
+Chatbot: May I take your order?
+You: What are the specials today?
+Chatbot: Our specials today are:
+1. Chef's Special Pizza
+2. Seafood Pasta
+3. BBQ Chicken Burger
+You: Thank you
+Chatbot: Thank you for dining with us! Have a great day!
+
+"""
+
+"""
+This Python program implements a simple restaurant chatbot.
+
+Import Libraries: The random library is imported to generate random responses.
+Responses Dictionary: A dictionary named responses is defined, containing various patterns as keys and corresponding lists of responses as values. Each key represents a pattern or query that the user might input, and the list contains different responses for that pattern.
+Generate Response Function: The generate_response function takes the user's input as a parameter and generates a response based on the input pattern. It first converts the input to lowercase for case-insensitive matching. Then, it checks for specific keywords or patterns in the input and selects a random response from the corresponding list in the responses dictionary. If the input does not match any specific pattern, a default response is selected.
+Restaurant Chatbot Function: The restaurant_chatbot function handles the interaction with the user. It starts by printing a welcome message and instructions. Then, it enters a loop where it continuously prompts the user for input, generates a response using the generate_response function, and prints the response. The loop continues until the user inputs "bye" or "thank you", at which point the chatbot exits.
+Running the Chatbot: Finally, the restaurant_chatbot function is called to run the chatbot.
+
+The chatbot provides appropriate responses based on the user's input, including greetings, menu inquiries, ordering requests, asking for specials, and farewells.
+
+"""

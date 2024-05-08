@@ -1,0 +1,117 @@
+def selection_sort_asc(arr):
+    n = len(arr)
+    
+    for i in range(n):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    
+    return arr
+
+
+def selection_sort_desc(arr):
+    n = len(arr)
+    
+    for i in range(n):
+        max_index = i
+        for j in range(i + 1, n):
+            if arr[j] > arr[max_index]:
+                max_index = j
+        
+        arr[i], arr[max_index] = arr[max_index], arr[i]
+    
+    return arr
+
+
+def menu_driven_selection_sort():
+    print("SELECTION SORT")
+    
+    length = int(input("\nEnter the number of elements : "))
+    arr = []
+    for i in range(length):
+        num=int(input("Enter element : "))
+        arr.append(num)
+        
+    while True:
+        print("\n1. Sort Ascending")
+        print("2. Sort Descending")
+        print("3. Exit")
+        choice = int(input("Enter your choice : "))
+        
+        if choice == 1:
+            sorted_arr = selection_sort_asc(arr)
+        elif choice == 2:
+            sorted_arr = selection_sort_desc(arr)
+        elif choice==3:
+            print("Thank You")
+            break
+        else:
+            print("Invalid choice!")
+            return
+            
+        print("\nSorted list : ")
+        print(sorted_arr)
+    
+    
+menu_driven_selection_sort()
+
+
+"""
+SELECTION SORT
+
+Enter the number of elements : 6
+Enter element : 2
+Enter element : 9
+Enter element : 1
+Enter element : 5
+Enter element : 4
+Enter element : 7
+
+1. Sort Ascending
+2. Sort Descending
+3. Exit
+Enter your choice : 1
+
+Sorted list : 
+[1, 2, 4, 5, 7, 9]
+
+1. Sort Ascending
+2. Sort Descending
+3. Exit
+Enter your choice : 2
+
+Sorted list : 
+[9, 7, 5, 4, 2, 1]
+
+1. Sort Ascending
+2. Sort Descending
+3. Exit
+Enter your choice : 3
+Thank You
+
+"""
+
+"""
+This Python code implements selection sort in both ascending and descending orders, with a menu-driven approach to choose between the two sorting options. 
+
+Selection Sort:
+Selection sort is a simple sorting algorithm that repeatedly selects the minimum (or maximum) element from the unsorted portion of the array and places it at the beginning (or end) of the sorted portion.
+
+Components of the Code:
+selection_sort_asc Function:
+It sorts the input array in ascending order using the selection sort algorithm.
+It iterates through the array and finds the minimum element's index, then swaps it with the current element.
+selection_sort_desc Function:
+It sorts the input array in descending order using the selection sort algorithm.
+It iterates through the array and finds the maximum element's index, then swaps it with the current element.
+menu_driven_selection_sort Function:
+It serves as the main function that allows the user to interactively select the sorting order and provides a menu-driven interface.
+It prompts the user to input the number of elements and the elements themselves.
+It continuously displays a menu with options to sort the array in ascending order, descending order, or exit the program.
+Depending on the user's choice, it calls the respective sorting function and displays the sorted array.
+
+
+""" 

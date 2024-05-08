@@ -1,0 +1,69 @@
+import random
+
+# Dictionary containing patterns and responses for the bus travel chatbot
+responses = {
+    "greeting": ["Hello! Welcome to our bus travel chatbot.", "Hi there! How can I assist you today?"],
+    "booking": ["Sure! To which destination would you like to book a bus?"],
+    "availability": ["I can help you find available buses. Please provide the date of travel and destination."],
+    "fare": ["The fare for the selected route depends on the type of bus and distance. Can you please specify your preferences?"],
+    "goodbye": ["Thank you for using our bus travel chatbot! Have a great journey!", "Goodbye! We hope to see you again soon."],
+    "default": ["I'm sorry, I didn't understand that. Could you please rephrase your request?"]
+}
+
+# Function to generate a response based on user input
+def generate_response(user_input):
+    user_input = user_input.lower()
+    if "hello" in user_input or "hi" in user_input:
+        return random.choice(responses["greeting"])
+    elif "book" in user_input or "destination" in user_input:
+        return random.choice(responses["booking"])
+    elif "available" in user_input or "bus" in user_input:
+        return random.choice(responses["availability"])
+    elif "fare" in user_input or "price" in user_input:
+        return random.choice(responses["fare"])
+    elif "bye" in user_input or "thank you" in user_input:
+        return random.choice(responses["goodbye"])
+    else:
+        return random.choice(responses["default"])
+
+# Main function to handle user interaction
+def bus_travel_chatbot():
+    print("Bus Travel Chatbot:")
+    print("How can I assist you today?")
+
+    while True:
+        user_input = input("You: ")
+        response = generate_response(user_input)
+        print("Chatbot:", response)
+
+        if "bye" in user_input or "thank you" in user_input:
+            break
+
+# Run the chatbot
+bus_travel_chatbot()
+
+"""
+Bus Travel Chatbot:
+How can I assist you today?
+You: Hi
+Chatbot: Hi there! How can I assist you today?
+You: I want to book a bus
+Chatbot: Sure! To which destination would you like to book a bus?
+You: Are there any buses available?
+Chatbot: I can help you find available buses. Please provide the date of travel and destination.
+You: What is the fare for a trip?
+Chatbot: The fare for the selected route depends on the type of bus and distance. Can you please specify your preferences?
+You: Thank you
+Chatbot: Goodbye! We hope to see you again soon.
+"""
+
+"""
+This chatbot provides responses to user queries related to bus booking, availability, and travel destinations.
+
+Explanation:
+
+The responses dictionary contains patterns and corresponding responses for the bus travel chatbot. Each key in the dictionary represents a category of user queries, such as greetings, booking, availability, fare, goodbye, and default.
+The generate_response function takes user input, processes it, and returns an appropriate response based on the input pattern.
+The bus_travel_chatbot function handles the main interaction with the user. It prompts the user for input, generates responses using the generate_response function, and continues the interaction until the user inputs "bye" or "thank you".
+
+"""
